@@ -1,10 +1,11 @@
-# Helper for Login and logout
+
+
 class SessionHelper:
 
     def __init__(self, app):
         self.app =app
 
-    def login(self, username="administrator", password="root"):
+    def login(self, username, password):
         wd = self.app.wd
         self.app.open_home_page()
         wd.find_element_by_name("username").click()
@@ -45,3 +46,4 @@ class SessionHelper:
             else:
                 self.logout()
         self.login(username, password)
+
