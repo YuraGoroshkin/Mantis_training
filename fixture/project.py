@@ -29,12 +29,13 @@ class ProjectHelper:
         wd.find_element_by_name("description").click()
         wd.find_element_by_name("description").clear()
         wd.find_element_by_name("description").send_keys(project.description)
+
     project_cache = None
 
-    def delete_project(self,project):
+    def delete_project(self, project):
         wd = self.app.wd
         self.open_project_page()
-        wd.find_element_by_xpath("//a[text()='%s']" %project.name).click()
+        wd.find_element_by_xpath("//a[text()='%s']" % project.name).click()
         wd.find_element_by_xpath("//input[@value='Delete Project']").click()
         wd.find_element_by_xpath("//input[@value='Delete Project']").click()
         self.project_cache = None
@@ -43,7 +44,7 @@ class ProjectHelper:
         if self.project_cache is None:
             wd = self.app.wd
             self.open_project_page()
-            self.project_cache = []
+            project_list = []
             rows = wd.find_elements_by_xpath("//table[@class='width100']//tr[starts-with(@class, 'row-')]")
             for element in rows[1:]:
                 cells = element.find_elements_by_tag_name("td")
@@ -51,6 +52,6 @@ class ProjectHelper:
                 status = cells[1].text
                 viewStatus = cells[3].text
                 description = cells[4].text
-                self.project_cache.append(Project(name=name, status=status, viewStatus=viewStatus,
-                                                  description=description))
-        return self.project_cache
+                project_list.append(
+                    Project(name=name, id=id, status=status, viewStatus=viewStatus, description=description))
+        return list(project_list)
